@@ -1,9 +1,24 @@
 package actions;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 
 public class BrowserActions {
     private WebDriver driver;
+    private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<>();
+
+    public static void initChromeDriver() {
+        driverThreadLocal.set(new EdgeDriver());
+    }
+
+    public static void quitChromeDriver() {
+        driverThreadLocal.get().quit();
+        driverThreadLocal.remove();
+    }
+
+    public static WebDriver getDriver() {
+        return driverThreadLocal.get();
+    }
 
     public BrowserActions(WebDriver driver) {
         this.driver = driver;
@@ -19,6 +34,10 @@ public class BrowserActions {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public String getPageURL() {
+        return driver.getCurrentUrl();
     }
 
     public void navigateTo(String url) {

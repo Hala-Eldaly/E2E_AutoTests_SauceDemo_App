@@ -1,27 +1,38 @@
 package pom;
 
+import actions.BrowserActions;
 import actions.UIActions;
 
 public class Login {
-    private UIActions actions ;
+  String loginURL = "https://www.saucedemo.com/v1/";
+  String usernameLocator = "id=user-name";
+  String passwordLocator = "id=password";
+  String loginButtonLocator = "id=login-button";
+  String errorMsgLocator = "css=h3[data-test='error']";
 
-    private final String usernameLocator = "id=user-name";
-    private final String passwordLocator = "id=password";
-    private final String loginButtonLocator = "id=login-button";
-    private final String errorMsgLocator = "css=h3[data-test='error']";
+  UIActions uiActions;
+  BrowserActions bActions;
 
-    public Login(UIActions actions) {
-        this.actions = actions; // actions = new UIActions(driver);
+    public Login() {
+        this.uiActions = new UIActions(BrowserActions.getDriver());
+        this.bActions = new BrowserActions(BrowserActions.getDriver());
     }
 
+    public void navigateToLoginPage() {
+        bActions.navigateTo(loginURL);
+    }
+
+    public String getPageURL() {
+        return bActions.getPageURL();
+    }
 
     public void loginWithCredentials(String username, String password) {
-        actions.type(usernameLocator, username);
-        actions.type(passwordLocator, password);
-        actions.click(loginButtonLocator);
+        uiActions.type(usernameLocator, username);
+        uiActions.type(passwordLocator, password);
+        uiActions.click(loginButtonLocator);
     }
 
     public String getErrorMessageText() {
-        return actions.getText(errorMsgLocator);
+        return uiActions.getText(errorMsgLocator);
     }
 }

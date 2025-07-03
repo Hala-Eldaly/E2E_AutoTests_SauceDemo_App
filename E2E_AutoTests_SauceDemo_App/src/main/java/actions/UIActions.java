@@ -3,8 +3,8 @@ package actions;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
+
 
 public class UIActions {
     private WebDriver driver;
@@ -17,14 +17,15 @@ public class UIActions {
         String[] parts = locator.split("=", 2);
         String type = parts[0];
         String value = parts[1];
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         switch (type) {
             case "id":
-                return driver.findElement(By.id(value));
+                return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(value)));
             case "css":
-                return driver.findElement(By.cssSelector(value));
+                return wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(value)));
             case "xpath":
-                return driver.findElement(By.xpath(value));
+                return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(value)));
             default:
                 throw new RuntimeException("Unsupported locator type: " + type);
         }
